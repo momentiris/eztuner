@@ -60,24 +60,26 @@ let make = (
     }
   }, [userState])
 
-  <div className="w-full flex flex-col justify-center items-center flex-grow">
-    <div className="w-8 mb-2 text-light"> <Icons.Arrow /> </div>
-    <div
-      ref={containerRef->ReactDOM.Ref.domRef}
-      className="flex justify-center overflow-x-visible w-note">
-      <div className="snappable overflow-x-auto flex flex-shrink-0 w-screen text-xl pb-4 mb-12">
-        <Placeholder />
-        {Constants.baseNotes
-        ->Belt.Array.mapWithIndex((i, note) =>
-          <Note
-            key=note active={note == activeNote} note nodeRef={noteRefs[i]->ReactDOM.Ref.domRef}
-          />
-        )
-        ->React.array}
-        <Placeholder />
+  <div className="w-full flex flex-col justify-center items-center flex-grow font-main">
+    <div className="w-8 mb-4 text-accentlight"> <Icons.Arrow /> </div>
+    <div className="overflow-x-visible flex justify-center mb-12">
+      <div
+        ref={containerRef->ReactDOM.Ref.domRef}
+        className="flex justify-center overflow-x-visible w-note  ">
+        <div className="snappable overflow-x-scroll flex flex-shrink-0 w-screen text-xl pb-6">
+          <Placeholder />
+          {Constants.baseNotes
+          ->Belt.Array.mapWithIndex((i, note) =>
+            <Note
+              key=note active={note == activeNote} note nodeRef={noteRefs[i]->ReactDOM.Ref.domRef}
+            />
+          )
+          ->React.array}
+          <Placeholder />
+        </div>
       </div>
     </div>
-    <div className="max-w-xs">
+    <div className="max-w-xs text-accentlight">
       <Button.Unmute onClick={_ => onPlayClick()} onMouseDown={_ => onUserInteraction()}>
         {(isPlaying ? "Pause" : "Play")->React.string}
       </Button.Unmute>

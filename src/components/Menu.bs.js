@@ -8,12 +8,14 @@ var RescriptReactRouter = require("@rescript/react/src/RescriptReactRouter.bs.js
 function Menu(Props) {
   var onClick = Props.onClick;
   return React.createElement("ul", {
-              className: "currentColor"
+              className: "currentColor font-semibold flex flex-col gap-4"
             }, React.createElement("li", {
+                  className: "cursor-pointer text-accent hover:text-dark",
                   onClick: (function (param) {
                       return Curry._1(onClick, RescriptReactRouter.push("/"));
                     })
                 }, "Basic"), React.createElement("li", {
+                  className: "cursor-pointer text-accent hover:text-dark",
                   onClick: (function (param) {
                       return Curry._1(onClick, RescriptReactRouter.push("/free"));
                     })

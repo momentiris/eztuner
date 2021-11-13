@@ -9,8 +9,8 @@ function Note(Props) {
   var nodeRef = Props.nodeRef;
   return React.createElement("div", {
               ref: nodeRef,
-              className: "flex w-note snap-center items-center font-medium justify-center flex-shrink-0 my-2 py-4 border-r border-dashed border-gray-400 select-none " + (
-                active ? "text-light" : "text-accent"
+              className: "flex text-lg tracking-widest w-note snap-center items-center font-bold justify-center flex-shrink-0 my-2 py-4 border-r border-dashed border-gray-400 select-none " + (
+                active ? "text-accentlight" : "text-accent"
               ),
               id: note
             }, note);

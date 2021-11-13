@@ -3,7 +3,7 @@ module PlayNote = {
   let make = (~children: React.element, ~onClick) => {
     <button
       onClick={onClick}
-      className="px-6 py-2 bg-accent font-bold text-current border-dark border-4 text-lg w-full cursor-pointer">
+      className="tracking-widest px-6 py-2 bg-accent font-bold text-accentlight border-dark border-4 text-lg w-full cursor-pointer">
       {children}
     </button>
   }
@@ -19,7 +19,7 @@ module Unmute = {
         | _ => ()
         }}
       onClick={onClick}
-      className="px-6 py-2 bg-accent font-bold text-current border-dark border-4 text-lg w-full cursor-pointer">
+      className="px-6 py-2 bg-accent tracking-widest font-bold text-current border-dark border-4 text-lg w-full cursor-pointer">
       {children}
     </button>
   }

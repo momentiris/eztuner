@@ -81,23 +81,25 @@ function Free(Props) {
           
         }), [userState]);
   return React.createElement("div", {
-              className: "w-full flex flex-col justify-center items-center flex-grow"
+              className: "w-full flex flex-col justify-center items-center flex-grow font-main"
             }, React.createElement("div", {
-                  className: "w-8 mb-2 text-light"
+                  className: "w-8 mb-4 text-accentlight"
                 }, React.createElement(Icons.Arrow.make, {})), React.createElement("div", {
-                  ref: containerRef,
-                  className: "flex justify-center overflow-x-visible w-note"
+                  className: "overflow-x-visible flex justify-center mb-12"
                 }, React.createElement("div", {
-                      className: "snappable overflow-x-auto flex flex-shrink-0 w-screen text-xl pb-4 mb-12"
-                    }, React.createElement(Free$Placeholder, {}), Belt_Array.mapWithIndex(Constants.baseNotes, (function (i, note) {
-                            return React.createElement(Note.make, {
-                                        active: note === activeNote,
-                                        note: note,
-                                        nodeRef: Caml_array.get(noteRefs, i),
-                                        key: note
-                                      });
-                          })), React.createElement(Free$Placeholder, {}))), React.createElement("div", {
-                  className: "max-w-xs"
+                      ref: containerRef,
+                      className: "flex justify-center overflow-x-visible w-note  "
+                    }, React.createElement("div", {
+                          className: "snappable overflow-x-scroll flex flex-shrink-0 w-screen text-xl pb-6"
+                        }, React.createElement(Free$Placeholder, {}), Belt_Array.mapWithIndex(Constants.baseNotes, (function (i, note) {
+                                return React.createElement(Note.make, {
+                                            active: note === activeNote,
+                                            note: note,
+                                            nodeRef: Caml_array.get(noteRefs, i),
+                                            key: note
+                                          });
+                              })), React.createElement(Free$Placeholder, {})))), React.createElement("div", {
+                  className: "max-w-xs text-accentlight"
                 }, React.createElement(Button.Unmute.make, {
                       children: isPlaying ? "Pause" : "Play",
                       onClick: (function (param) {
