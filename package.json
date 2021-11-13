@@ -2,7 +2,7 @@
   "name": "rescript-project-template",
   "version": "0.0.1",
   "scripts": {
-    "build": "rescript",
+    "build": "rescript && parcel build index.html",
     "clean": "rescript clean -with-deps",
     "dev": "npx parcel index.html",
     "re:dev": "rescript build -w"
