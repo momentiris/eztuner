@@ -22,6 +22,9 @@ body {
 }
 
 @layer components {
+  .button-transition {
+    @apply transform active:scale-[0.98] hover:bg-accentlight hover:text-dark  transition-transform duration-100;
+  }
   
 
   .nav-transition--open {

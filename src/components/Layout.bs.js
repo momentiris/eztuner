@@ -7,7 +7,7 @@ var Navbar = require("./Navbar.bs.js");
 function Layout(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "flex flex-grow relative"
+              className: "flex flex-grow relative w-full"
             }, React.createElement(Navbar.make, {}), children);
 }
 

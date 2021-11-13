@@ -18,9 +18,9 @@ var defaultTuning = [
 function Basic(Props) {
   var onPlayNote = Props.onPlayNote;
   return React.createElement("div", {
-              className: "w-full h-full flex justify-center items-center text-light"
+              className: "w-full h-full flex justify-center items-center text-light px-4"
             }, React.createElement("div", {
-                  className: "flex flex-grow flex-col justify-center items-center max-w-sm gap-6"
+                  className: "flex flex-grow flex-col justify-center items-center max-w-sm gap-6 w-full"
                 }, Belt_Array.map(defaultTuning, (function (note) {
                         return React.createElement(Button.PlayNote.make, {
                                     children: note,

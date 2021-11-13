@@ -8,7 +8,7 @@ function Button$PlayNote(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
   return React.createElement("button", {
-              className: "tracking-widest px-6 py-2 bg-accent font-bold text-accentlight border-dark border-4 text-lg w-full cursor-pointer",
+              className: "button-transition tracking-widest px-6 py-2 bg-accent font-bold text-accentlight border-dark border-4 text-lg w-full cursor-pointer",
               onClick: onClick
             }, children);
 }
@@ -22,7 +22,7 @@ function Button$Unmute(Props) {
   var onClick = Props.onClick;
   var onMouseDown = Props.onMouseDown;
   return React.createElement("button", {
-              className: "px-6 py-2 bg-accent tracking-widest font-bold text-current border-dark border-4 text-lg w-full cursor-pointer",
+              className: "min-w-[8rem] button-transition px-6 py-2 bg-accent tracking-widest font-bold text-current border-dark border-4 text-lg cursor-pointer",
               onClick: onClick,
               onMouseDown: (function (param) {
                   if (onMouseDown !== undefined) {
