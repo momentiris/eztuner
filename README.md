@@ -1,3 +1,3 @@
-# Eztuner
+# Eztuner :guitar: :zap:
 
-A web based guitar tuner
+ A web based guitar tuner
