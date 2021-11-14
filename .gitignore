@@ -5,4 +5,4 @@
 .merlin
 .parcel-cache
 dist
-*.bs.js
+**/*.bs.js
