@@ -11,7 +11,7 @@ let make = (
   ~onUserInteraction,
   ~onMute,
   ~onUnmute,
-  ~isPlaying,
+  ~synthState: State.synthState,
   ~triggerAttack,
 ) => {
   let (activeNote, setActiveNote) = React.useState(_ => "C2")
@@ -48,8 +48,8 @@ let make = (
   }
 
   let onPlayClick = () =>
-    switch isPlaying {
-    | true => onMute()
+    switch synthState {
+    | IsPlaying => onMute()
     | _ => onUnmute()
     }->ignore
 
@@ -80,9 +80,12 @@ let make = (
       </div>
     </div>
     <div className="max-w-xs text-accentlight">
-      <Button.Unmute onClick={_ => onPlayClick()} onMouseDown={_ => onUserInteraction()}>
-        {(isPlaying ? "Pause" : "Play")->React.string}
-      </Button.Unmute>
+      <Button.Base
+        buttonState={State.Button.Note.Inactive}
+        onClick={_ => onPlayClick()}
+        onMouseDown={_ => onUserInteraction()}>
+        {(synthState === IsPlaying ? "Pause" : "Play")->React.string}
+      </Button.Base>
     </div>
   </div>
 }

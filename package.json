@@ -1,5 +1,5 @@
 {
-  "name": "rescript-project-template",
+  "name": "eztuner",
   "version": "0.0.1",
   "scripts": {
     "build": "rescript && parcel build index.html",
@@ -10,7 +10,7 @@
   "keywords": [
     "rescript"
   ],
-  "author": "",
+  "author": "momentiris <andlundq@protonmail.com> (https://github.com/momentiris)",
   "license": "MIT",
   "dependencies": {
     "@rescript/react": "^0.10.3",

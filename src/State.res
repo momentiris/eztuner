@@ -1,8 +1,15 @@
 type userState = HasNotInteraced | HasInteracted
+type synthState = IsPlaying | IsNotPlaying
 
 type t = {
   userState: userState,
-  isPlaying: bool,
+  synthState: synthState,
 }
 
-let initialState = {userState: HasNotInteraced, isPlaying: false}
+let initialState = {userState: HasNotInteraced, synthState: IsNotPlaying}
+
+module Button = {
+  module Note = {
+    type t = Active | Inactive
+  }
+}

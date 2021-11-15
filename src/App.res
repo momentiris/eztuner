@@ -5,11 +5,14 @@ let make = () => {
 
   let onPlayNote = note => {
     switch state.userState {
-    | HasInteracted => Tone.triggerNote(note)
+    | HasInteracted => {
+        Tone.triggerNote(note)
+        setState(state => {...state, synthState: IsPlaying})
+      }
     | _ =>
       Tone.startSynth()
       ->Promise.thenResolve(_ => {
-        setState(state => {...state, userState: HasInteracted})
+        setState(_ => {userState: HasInteracted, synthState: IsPlaying})
         Tone.triggerNote(note)
       })
       ->ignore
@@ -18,18 +21,15 @@ let make = () => {
 
   let onUnmute = () =>
     Tone.startSynth()
-    ->Promise.thenResolve(_ => setState(state => {...state, isPlaying: true}))
+    ->Promise.thenResolve(_ => setState(state => {...state, synthState: IsPlaying}))
     ->ignore
 
   let onMute = () =>
     Tone.stopSynth()
-    ->Promise.thenResolve(_ => setState(state => {...state, isPlaying: false}))
+    ->Promise.thenResolve(_ => setState(state => {...state, synthState: IsNotPlaying}))
     ->ignore
 
-  let triggerAttack = note => {
-    note->Js.log
-    Tone.triggerNote(note)
-  }
+  let triggerAttack = note => Tone.triggerNote(note)
 
   let onUserInteraction = () => {
     setState(state => {...state, userState: HasInteracted})
@@ -38,12 +38,12 @@ let make = () => {
   <main className="flex flex-col items-center h-screen w-screen overflow-hidden">
     <Layout>
       {switch url.path {
-      | list{} => <Basic onPlayNote />
+      | list{} => <Basic synthState=state.synthState onPlayNote />
       | list{"free"} =>
         <Free
           onUserInteraction
           userState=state.userState
-          isPlaying=state.isPlaying
+          synthState=state.synthState
           onMute
           onUnmute
           triggerAttack

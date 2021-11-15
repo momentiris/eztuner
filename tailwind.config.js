@@ -10,9 +10,9 @@ module.exports = {
       colors: {
         main: '#3789A4',
         accent: '#1F4D5C',
-        accentlight: "#b6c8cc",
+        accentlight: '#b6c8cc',
         dark: '#0D1F26',
-        light: '#D9EEF2'
+        light: '#D9EEF2',
       },
       width: {
         note: 'calc((100% / 3) - 1rem)',
