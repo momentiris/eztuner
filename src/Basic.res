@@ -6,8 +6,6 @@ let make = (~onPlayNote, ~onUnmount) => {
   let (activeNote, setActiveNote) = React.useState(_ => None)
 
   React.useEffect0(() => {
-    Tone.releaseNote()
-    Tone.stopSynth()
     Some(() => onUnmount())
   })
 
