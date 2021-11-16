@@ -8,11 +8,9 @@ type t<'a> = 'a
 @send external triggerAttack: (t<'a>, string) => unit = "triggerAttack"
 @send external triggerRelease: unit => unit = "triggerRelease"
 
-let synth = make()
+let startSynth = synth => start()->Promise.thenResolve(_ => synth->connect(getDestination()))
 
-let startSynth = () => start()->Promise.thenResolve(_ => synth->connect(getDestination()))
+let stopSynth = synth => synth->disconnect(getDestination())
 
-let stopSynth = () => synth->disconnect(getDestination())
-
-let triggerNote = note => synth->triggerAttack(note)
-let releaseNote = _ => synth->triggerRelease
+let triggerNote = (synth, note) => synth->triggerAttack(note)
+let releaseNote = synth => synth->triggerRelease
