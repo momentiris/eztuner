@@ -4,19 +4,12 @@ let make = () => {
   let (state, setState) = React.useState(_ => State.initialState)
 
   let onPlayNote = note => {
-    switch state.userState {
-    | HasInteracted => {
-        Tone.triggerNote(note)
-        setState(state => {...state, synthState: IsPlaying})
-      }
-    | _ =>
-      Tone.startSynth()
-      ->Promise.thenResolve(_ => {
-        setState(_ => {userState: HasInteracted, synthState: IsPlaying})
-        Tone.triggerNote(note)
-      })
-      ->ignore
-    }
+    Tone.startSynth()
+    ->Promise.thenResolve(_ => {
+      setState(_ => {userState: HasInteracted, synthState: IsPlaying})
+      Tone.triggerNote(note)
+    })
+    ->ignore
   }
 
   let onUnmute = () =>
@@ -24,10 +17,11 @@ let make = () => {
     ->Promise.thenResolve(_ => setState(state => {...state, synthState: IsPlaying}))
     ->ignore
 
-  let onMute = () =>
+  let onMute = () => {
+    Tone.releaseNote()
     Tone.stopSynth()
-    ->Promise.thenResolve(_ => setState(state => {...state, synthState: IsNotPlaying}))
-    ->ignore
+    setState(state => {...state, synthState: IsNotPlaying})
+  }
 
   let triggerAttack = note => Tone.triggerNote(note)
 

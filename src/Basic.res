@@ -5,7 +5,7 @@ let defaultTuning = ["E2", "A2", "D3", "G3", "B3", "E4"]
 let make = (~onPlayNote, ~synthState) => {
   let (activeNote, setActiveNote) = React.useState(_ => None)
 
-  <div className="w-full h-full flex justify-center items-center text-light px-6">
+  <div className="w-full h-full flex justify-center items-center px-6">
     <div className="flex flex-grow flex-col justify-center items-center max-w-sm gap-6 w-full">
       {defaultTuning
       ->Belt.Array.map(note => {

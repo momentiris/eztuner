@@ -18,13 +18,13 @@ button {
 
 @keyframes sound {
   0% {
-    opacity: 0.2;
-    transform: scaleY(1);
+    opacity: 0.1;
+    transform: scaleY(2);
   }
 
   100% {
-    opacity: 0.4;
-    transform: scaleY(4);
+    opacity: 0.2;
+    transform: scaleY(6);
   }
 }
 
@@ -36,10 +36,10 @@ button {
   position: absolute;
   pointer-events: none;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  transform-origin: bottom;
-  gap: 2px;
+  transform-origin: center;
+  gap: 1px;
   padding-left: 32px;
   padding-right: 32px;
 }
@@ -47,7 +47,7 @@ button {
 .bar {
   width: 100%;
   display: inline-block;
-  transform-origin: bottom;
+  transform-origin: center;
   animation: sound 400ms -800ms linear infinite alternate;
 }
 

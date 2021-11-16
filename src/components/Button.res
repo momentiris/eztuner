@@ -6,15 +6,14 @@ module Base = {
     ~onMouseDown=() => (),
     ~buttonState: State.Button.Note.t,
   ) => {
-    let defaultClassnames = "py-2 relative animation--soundwave active:button--scale origin-center select-none transition-transform-colors duration-150 tracking-widest px-6 font-bold border-dark border-4 text-xl w-full cursor-pointer"
-    let activeClassnames = ""
+    let defaultClassnames = "flex items-center justify-center py-2 relative animation--soundwave active:button--scale origin-center select-none transition-transform-colors duration-150 tracking-widest px-6 font-bold border-dark border-4 text-xl w-full cursor-pointer"
 
     let classnames =
       defaultClassnames ++
       " " ++
       switch buttonState {
-      | Active => activeClassnames ++ " " ++ "bg-accentlight text-dark"
-      | Inactive => activeClassnames ++ " " ++ "bg-accent text-accentlight"
+      | Active => "bg-accentlight text-dark"
+      | Inactive => "bg-accent text-accentlight"
       }
 
     let handleMouseDown = () => {
@@ -25,11 +24,11 @@ module Base = {
       switch buttonState {
       | Inactive => React.null
       | Active =>
-        Belt.Array.range(0, 25)
+        Belt.Array.range(0, 75)
         ->Belt.Array.mapWithIndex((_, index) =>
           <div
             key={Belt.Int.toString(index)}
-            className="bar bg-main"
+            className="bar bg-gray-500"
             style={ReactDOM.Style.make(
               ~animationDuration=Js.Math.random_int(350, 500)->Belt.Int.toString ++ "ms",
               ~height=Js.Math.random_int(3, 6)->Belt.Int.toString ++ "px",
@@ -42,8 +41,16 @@ module Base = {
     , [buttonState])
 
     <button onMouseDown={_ => handleMouseDown()} onClick={onClick} className=classnames>
-      <div className="bars z-0"> {animations} </div>
-      <span className="relative z-10"> {children} </span>
+      <div
+        className={"bars z-0 transition-opacity" ++
+        " " ++
+        switch buttonState {
+        | Inactive => "opacity-0"
+        | Active => "opacity-100"
+        }}>
+        {animations}
+      </div>
+      {children}
     </button>
   }
 }

@@ -79,12 +79,12 @@ let make = (
         </div>
       </div>
     </div>
-    <div className="max-w-xs text-accentlight">
+    <div className="max-w-xs w-full text-accentlight">
       <Button.Base
-        buttonState={State.Button.Note.Inactive}
+        buttonState={synthState === IsPlaying ? Active : Inactive}
         onClick={_ => onPlayClick()}
         onMouseDown={_ => onUserInteraction()}>
-        {(synthState === IsPlaying ? "Pause" : "Play")->React.string}
+        {(synthState === IsPlaying ? "Stop" : "Play")->React.string}
       </Button.Base>
     </div>
   </div>

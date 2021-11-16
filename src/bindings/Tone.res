@@ -5,14 +5,14 @@ type t<'a> = 'a
 @send external connect: (t<'a>, 'destination) => unit = "connect"
 @send external disconnect: (t<'a>, 'destination) => unit = "disconnect"
 @send external triggerAttack: (t<'a>, string) => unit = "triggerAttack"
-@send external triggerRelease: t<'a> => unit = "triggerRelease"
+@send external triggerRelease: unit => unit = "triggerRelease"
 
 let synth = make()
 
 let startSynth = () =>
   start()->Promise.thenResolve(_ => synth->connect(synth["context"]["destination"]))
 
-let stopSynth = () =>
-  start()->Promise.thenResolve(_ => synth->disconnect(synth["context"]["destination"]))
+let stopSynth = () => synth->disconnect(synth["context"]["destination"])
 
 let triggerNote = note => synth->triggerAttack(note)
+let releaseNote = _ => synth->triggerRelease
