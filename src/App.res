@@ -18,7 +18,6 @@ let make = () => {
     ->ignore
 
   let onMute = () => {
-    Tone.releaseNote()
     Tone.stopSynth()
     setState(state => {...state, synthState: IsNotPlaying})
   }
@@ -32,15 +31,16 @@ let make = () => {
   <main className="flex flex-col items-center h-screen w-screen overflow-hidden">
     <Layout>
       {switch url.path {
-      | list{} => <Basic synthState=state.synthState onPlayNote />
+      | list{} => <Basic onPlayNote onUnmount=onMute />
       | list{"free"} =>
         <Free
+          triggerAttack
           onUserInteraction
-          userState=state.userState
-          synthState=state.synthState
           onMute
           onUnmute
-          triggerAttack
+          onUnmount=onMute
+          userState=state.userState
+          synthState=state.synthState
         />
       | _ => <div />
       }}

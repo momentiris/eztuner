@@ -2,8 +2,14 @@
 let defaultTuning = ["E2", "A2", "D3", "G3", "B3", "E4"]
 
 @react.component
-let make = (~onPlayNote, ~synthState) => {
+let make = (~onPlayNote, ~onUnmount) => {
   let (activeNote, setActiveNote) = React.useState(_ => None)
+
+  React.useEffect0(() => {
+    Tone.releaseNote()
+    Tone.stopSynth()
+    Some(() => onUnmount())
+  })
 
   <div className="w-full h-full flex justify-center items-center px-6">
     <div className="flex flex-grow flex-col justify-center items-center max-w-sm gap-6 w-full">

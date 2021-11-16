@@ -13,6 +13,7 @@ let make = (
   ~onUnmute,
   ~synthState: State.synthState,
   ~triggerAttack,
+  ~onUnmount,
 ) => {
   let (activeNote, setActiveNote) = React.useState(_ => "C2")
 
@@ -59,6 +60,10 @@ let make = (
     | _ => None
     }
   }, [userState])
+
+  React.useEffect0(() => {
+    Some(() => onUnmount())
+  })
 
   <div className="w-full flex flex-col justify-center items-center flex-grow font-main">
     <div className="w-8 mb-4 text-accentlight"> <Icons.Arrow /> </div>
