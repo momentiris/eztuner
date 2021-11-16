@@ -13,9 +13,9 @@ let make = () => {
     <div className="bottom-0 right-0 flex items-center justify-center z-20">
       <div
         onClick={_ => toggle()}
-        className={`fixed bottom-5 right-5 w-14 h-14 bg-gray-500 rounded-full flex items-center justify-center z-50 ${isOpen
-            ? "text-dark transition-colors duration-150"
-            : "text-accentlight "}`}>
+        className={`cursor-pointer transform transition-transform duration-150 active:scale-95 fixed bottom-5 right-5 w-14 h-14 bg-gray-500 rounded-full flex items-center justify-center z-50 ${isOpen
+            ? "text-dark transition-colors"
+            : "text-accentlight"}`}>
         <Icons.Hamburger size="32" />
       </div>
     </div>
