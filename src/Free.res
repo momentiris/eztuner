@@ -35,6 +35,7 @@ let make = (
         ->Option.map(Entry.target)
         ->Option.map(el => {
           setActiveNote(_ => el.id)
+          Js.log("note")
           triggerAttack(el.id)
         })
         ->ignore
@@ -62,7 +63,11 @@ let make = (
   }, [userState])
 
   React.useEffect0(() => {
-    Some(() => onUnmount())
+    Some(
+      () => {
+        onUnmount()
+      },
+    )
   })
 
   <div className="w-full flex flex-col justify-center items-center flex-grow font-main">

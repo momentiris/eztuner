@@ -2,11 +2,16 @@
 let defaultTuning = ["E2", "A2", "D3", "G3", "B3", "E4"]
 
 @react.component
-let make = (~onPlayNote, ~onUnmount) => {
+let make = (~onPlayNote, ~onUnmount, ~synthState) => {
   let (activeNote, setActiveNote) = React.useState(_ => None)
 
   React.useEffect0(() => {
-    Some(() => onUnmount())
+    Some(
+      () => {
+        Js.log("HERE")
+        onUnmount()
+      },
+    )
   })
 
   <div className="w-full h-full flex justify-center items-center px-6">
@@ -14,10 +19,13 @@ let make = (~onPlayNote, ~onUnmount) => {
       {defaultTuning
       ->Belt.Array.map(note => {
         <Button.Base
-          buttonState={activeNote->Belt.Option.mapWithDefault(
-            State.Button.Note.Inactive,
-            activeNote => activeNote === note ? Active : Inactive,
-          )}
+          buttonState={switch synthState {
+          | State.IsNotPlaying => Inactive
+          | IsPlaying =>
+            activeNote->Belt.Option.mapWithDefault(State.Button.Note.Inactive, activeNote =>
+              activeNote === note ? Active : Inactive
+            )
+          }}
           key={note}
           onClick={_ => {
             onPlayNote(note)
