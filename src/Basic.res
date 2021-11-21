@@ -1,14 +1,25 @@
-// let defaultTuning = ["E2"]
 let defaultTuning = ["E2", "A2", "D3", "G3", "B3", "E4"]
 
 @react.component
-let make = (~onPlayNote, ~onUnmount, ~synthState) => {
+let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
   let (activeNote, setActiveNote) = React.useState(_ => None)
+
+  let onClickActiveNote = () => {
+    onStopNote()
+    setActiveNote(_ => None)
+  }
+
+  let onClickInactiveNote = note => {
+    onPlayNote(note)
+    setActiveNote(_ => Some(note))
+  }
+
+  let getIsClickedNoteActive = note =>
+    activeNote->Belt.Option.mapWithDefault(false, activeNote => activeNote === note)
 
   React.useEffect0(() => {
     Some(
       () => {
-        Js.log("HERE")
         onUnmount()
       },
     )
@@ -21,16 +32,22 @@ let make = (~onPlayNote, ~onUnmount, ~synthState) => {
         <Button.Base
           buttonState={switch synthState {
           | State.IsNotPlaying => Inactive
-          | IsPlaying =>
-            activeNote->Belt.Option.mapWithDefault(State.Button.Note.Inactive, activeNote =>
-              activeNote === note ? Active : Inactive
-            )
+          | State.IsPlaying =>
+            switch getIsClickedNoteActive(note) {
+            | true => Active
+            | false => Inactive
+            }
           }}
           key={note}
-          onClick={_ => {
-            onPlayNote(note)
-            setActiveNote(_ => Some(note))
-          }}>
+          onClick={_ =>
+            switch synthState {
+            | State.IsNotPlaying => onClickInactiveNote(note)
+            | State.IsPlaying =>
+              switch getIsClickedNoteActive(note) {
+              | true => onClickActiveNote()
+              | false => onClickInactiveNote(note)
+              }
+            }}>
           {React.string(note)}
         </Button.Base>
       })
