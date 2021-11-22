@@ -1,6 +1,6 @@
+let synth = Tone.make()
 @react.component
 let make = () => {
-  let synth = React.useMemo0(Tone.make)
   let url = RescriptReactRouter.useUrl()
 
   let (state, setState) = React.useState(_ => State.initialState)
