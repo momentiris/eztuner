@@ -26,7 +26,8 @@ let make = () => {
   <main className="flex flex-col items-center h-screen w-screen p-4">
     <Layout>
       {switch url.path {
-      | list{} => <Basic onPlayNote onUnmount=onMute onStopNote=onMute />
+      | list{} =>
+        <Basic onPlayNote onUnmount=onMute onStopNote=onMute synthState={state.synthState} />
       | list{"free"} =>
         <Free
           triggerAttack={Tone.triggerNote(synth)}

@@ -21,8 +21,10 @@ let makeStringNoteMap = () =>
   })
 
 @react.component
-let make = (~onPlayNote, ~onStopNote, ~onUnmount) => {
+let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
   let (activeTuning, setActiveTuning) = React.useState(_ => defaultTuning)
+  let (currentlyPlayingString, setCurrentlyPlayingString) = React.useState(_ => "")
+
   let stringNoteMap = React.useMemo0(makeStringNoteMap)
 
   let onSelectNote = (string, note) =>
@@ -36,10 +38,15 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount) => {
     | _ => false
     }
 
+  let getIsGStringActive = gString => currentlyPlayingString === gString
+
   let onPlayGuitarString = gString =>
     activeTuning
     ->Belt.Array.getBy(x => x->fst === gString)
-    ->Option.map(x => x->snd->onPlayNote)
+    ->Option.map(x => {
+      setCurrentlyPlayingString(_ => gString)
+      x->snd->onPlayNote
+    })
     ->ignore
 
   React.useEffect0(() => {
@@ -51,13 +58,23 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount) => {
   })
 
   <div className="w-full max-h-full flex flex-col items-center">
-    <div className="grid grid-cols-6 border-t border-l border-dashed w-full">
+    <div className="grid grid-cols-6 w-full border-dashed justify-items-center max-w-lg pt-2 pb-1">
+      {defaultTuning
+      ->Array.map(((s, _)) =>
+        <div key=s className="select-none text-sm text-accentlight last:lowercase">
+          {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
+        </div>
+      )
+      ->React.array}
+    </div>
+    <div
+      className="grid grid-cols-6 border-t border-l border-accentlight border-dashed w-full max-w-lg">
       {stringNoteMap
       ->Array.map(((s, notes)) =>
         <div key=s className="flex flex-col items-center">
           {notes
           ->Array.map(n => {
-            <div key=n className="border-b border-r border-dashed w-full">
+            <div key=n className="border-b border-r border-accentlight border-dashed w-full">
               <NoteListItem
                 note=n isActive={getIsNoteActive(s, n)} onClick={_ => onSelectNote(s, n)}
               />
@@ -68,14 +85,20 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount) => {
       )
       ->React.array}
     </div>
-    <div className="grid grid-cols-6 w-full border-dashed justify-items-center py-2">
+    <div
+      className="grid grid-cols-6 w-full  border-dashed justify-items-center max-w-lg gap-2 pt-4">
       {defaultTuning
       ->Array.map(((s, _)) =>
-        <div
-          onClick={_ => onPlayGuitarString(s)} key=s className="py-2 px-4 border-red-500 border-2">
-          {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
-        </div>
+        <Button.Base isActive={getIsGStringActive(s)} key=s onClick={_ => onPlayGuitarString(s)}>
+          {(synthState === State.IsPlaying && getIsGStringActive(s) ? "S" : "P")->React.string}
+        </Button.Base>
       )
+      // <div
+      //   onClick={_ => onPlayGuitarString(s)}
+      //   key=s
+      //   className="py-2 px-4 border-red-500 border-2  flex items-center justify-center">
+      //   {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
+      // </div>
       ->React.array}
     </div>
   </div>

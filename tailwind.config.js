@@ -20,7 +20,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: { textTransform: ['last'] },
   },
   plugins: [],
 }

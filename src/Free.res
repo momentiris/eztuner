@@ -91,7 +91,7 @@ let make = (
     </div>
     <div className="max-w-xs w-full text-accentlight">
       <Button.Base
-        buttonState={synthState === IsPlaying ? Active : Inactive}
+        isActive={synthState === IsPlaying}
         onClick={_ => onPlayClick()}
         onMouseDown={_ => onUserInteraction()}>
         {(synthState === IsPlaying ? "Stop" : "Play")->React.string}

@@ -1,19 +1,14 @@
 module Base = {
   @react.component
-  let make = (
-    ~children: React.element,
-    ~onClick,
-    ~onMouseDown=() => (),
-    ~buttonState: State.Button.Note.t,
-  ) => {
-    let defaultClassnames = "flex items-center justify-center py-2 relative animation--soundwave active:button--scale origin-center select-none transition-transform-colors duration-150 tracking-widest px-6 font-bold border-dark border-4 text-xl w-full cursor-pointer"
+  let make = (~children: React.element, ~onClick, ~onMouseDown=() => (), ~isActive: bool) => {
+    let defaultClassnames = "flex items-center justify-center py-1 px-3 relative active:button--scale origin-center tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
 
     let classnames =
       defaultClassnames ++
       " " ++
-      switch buttonState {
-      | Active => "bg-accentlight text-dark"
-      | Inactive => "bg-accent text-accentlight"
+      switch isActive {
+      | true => "bg-accentlight text-dark"
+      | _ => "bg-accent text-accentlight"
       }
 
     let handleMouseDown = () => {
@@ -21,10 +16,10 @@ module Base = {
     }
 
     let animations = React.useMemo1(_ =>
-      switch buttonState {
-      | Inactive => React.null
-      | Active =>
-        Belt.Array.range(0, 75)
+      switch isActive {
+      | false => React.null
+      | _ =>
+        Belt.Array.range(0, 5)
         ->Belt.Array.mapWithIndex((_, index) =>
           <div
             key={Belt.Int.toString(index)}
@@ -38,15 +33,15 @@ module Base = {
         )
         ->React.array
       }
-    , [buttonState])
+    , [isActive])
 
     <button onMouseDown={_ => handleMouseDown()} onClick={onClick} className=classnames>
       <div
         className={"bars z-0 transition-opacity" ++
         " " ++
-        switch buttonState {
-        | Inactive => "opacity-0"
-        | Active => "opacity-100"
+        switch isActive {
+        | false => "opacity-0"
+        | _ => "opacity-100"
         }}>
         {animations}
       </div>
