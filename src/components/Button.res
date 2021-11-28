@@ -1,39 +1,39 @@
 module Base = {
   @react.component
   let make = (~children: React.element, ~onClick, ~onMouseDown=() => (), ~isActive: bool) => {
-    let defaultClassnames = "flex items-center justify-center py-1 px-3 relative active:button--scale origin-center tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
+    let defaultClassnames = "rounded-md flex items-center justify-center p-1 active:button--scale origin-center tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
 
     let classnames =
       defaultClassnames ++
       " " ++
       switch isActive {
-      | true => "bg-accentlight text-dark"
-      | _ => "bg-accent text-accentlight"
+      | true => "bg-light text-dark"
+      | _ => "bg-accent text-light"
       }
 
     let handleMouseDown = () => {
       onMouseDown()
     }
 
-    let animations = React.useMemo1(_ =>
-      switch isActive {
-      | false => React.null
-      | _ =>
-        Belt.Array.range(0, 5)
-        ->Belt.Array.mapWithIndex((_, index) =>
-          <div
-            key={Belt.Int.toString(index)}
-            className="bar bg-gray-500"
-            style={ReactDOM.Style.make(
-              ~animationDuration=Js.Math.random_int(350, 500)->Belt.Int.toString ++ "ms",
-              ~height=Js.Math.random_int(3, 6)->Belt.Int.toString ++ "px",
-              (),
-            )}
-          />
-        )
-        ->React.array
-      }
-    , [isActive])
+    // let animations = React.useMemo1(_ =>
+    //   switch isActive {
+    //   | false => React.null
+    //   | _ =>
+    //     Belt.Array.range(0, 5)
+    //     ->Belt.Array.mapWithIndex((_, index) =>
+    //       <div
+    //         key={Belt.Int.toString(index)}
+    //         className="bar bg-gray-500"
+    //         style={ReactDOM.Style.make(
+    //           ~animationDuration=Js.Math.random_int(350, 500)->Belt.Int.toString ++ "ms",
+    //           ~height=Js.Math.random_int(3, 6)->Belt.Int.toString ++ "px",
+    //           (),
+    //         )}
+    //       />
+    //     )
+    //     ->React.array
+    //   }
+    // , [isActive])
 
     <button onMouseDown={_ => handleMouseDown()} onClick={onClick} className=classnames>
       <div
@@ -42,9 +42,8 @@ module Base = {
         switch isActive {
         | false => "opacity-0"
         | _ => "opacity-100"
-        }}>
-        {animations}
-      </div>
+        }}
+      />
       {children}
     </button>
   }

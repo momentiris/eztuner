@@ -23,7 +23,7 @@ let make = () => {
     setState(_ => {userState: HasInteracted, synthState: IsPlaying})->ignore
   }
 
-  <main className="flex flex-col items-center h-screen w-screen p-4">
+  <main className="flex flex-col items-center h-screen w-screen">
     <Layout>
       {switch url.path {
       | list{} =>

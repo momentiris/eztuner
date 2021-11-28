@@ -1,28 +1,18 @@
-type noteSMap = array<(string, array<string>)>
-let defaultTuning = [
-  ("E2", "E2"),
-  ("A2", "A2"),
-  ("D3", "D3"),
-  ("G3", "G3"),
-  ("B3", "B3"),
-  ("E4", "E4"),
-]
-
 open Belt
 let makeStringNoteMap = () =>
-  defaultTuning->Array.map(((gString, activeNote)) => {
+  Constants.Tuning.standard.value->Array.map(((gString, activeNote)) => {
     Constants.baseNotes
     ->Array.getIndexBy(n => gString === n)
     ->Option.map(index => (
       gString,
-      Constants.baseNotes |> Js.Array.slice(~start=index - 5, ~end_=index + 6),
+      Constants.baseNotes |> Js.Array.slice(~start=index - 5, ~end_=index + 6) |> Array.reverse,
     ))
     ->Option.getWithDefault((gString, []))
   })
 
 @react.component
 let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
-  let (activeTuning, setActiveTuning) = React.useState(_ => defaultTuning)
+  let (activeTuning, setActiveTuning) = React.useState(_ => Constants.Tuning.standard.value)
   let (currentlyPlayingString, setCurrentlyPlayingString) = React.useState(_ => "")
 
   let stringNoteMap = React.useMemo0(makeStringNoteMap)
@@ -57,9 +47,14 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
     )
   })
 
-  <div className="w-full max-h-full flex flex-col items-center">
-    <div className="grid grid-cols-6 w-full border-dashed justify-items-center max-w-lg pt-2 pb-1">
-      {defaultTuning
+  let onChangeTuning = (tuning: Constants.Tuning.t) => {
+    setActiveTuning(_ => tuning.value)
+  }
+
+  <div className="w-full max-h-full flex flex-col  max-w-lg mx-auto my-auto">
+    <ChangeTuning onChangeTuning={onChangeTuning} />
+    <div className="grid grid-cols-6 w-full border-dashed justify-items-center pt-2 pb-1">
+      {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
         <div key=s className="select-none text-sm text-accentlight last:lowercase">
           {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
@@ -67,8 +62,7 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
       )
       ->React.array}
     </div>
-    <div
-      className="grid grid-cols-6 border-t border-l border-accentlight border-dashed w-full max-w-lg">
+    <div className="grid grid-cols-6 border-t border-l border-accentlight border-dashed w-full">
       {stringNoteMap
       ->Array.map(((s, notes)) =>
         <div key=s className="flex flex-col items-center">
@@ -85,9 +79,8 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
       )
       ->React.array}
     </div>
-    <div
-      className="grid grid-cols-6 w-full  border-dashed justify-items-center max-w-lg gap-2 pt-4">
-      {defaultTuning
+    <div className="grid grid-cols-6 w-full border-dashed justify-items-center gap-2 pt-4">
+      {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
         <Button.Base isActive={getIsGStringActive(s)} key=s onClick={_ => onPlayGuitarString(s)}>
           {(synthState === State.IsPlaying && getIsGStringActive(s) ? "S" : "P")->React.string}
