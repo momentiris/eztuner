@@ -1,6 +1,6 @@
 open Belt
 let makeStringNoteMap = () =>
-  Constants.Tuning.standard.value->Array.map(((gString, activeNote)) => {
+  Constants.Tuning.standard.value->Array.map(((gString, _)) => {
     Constants.baseNotes
     ->Array.getIndexBy(n => gString === n)
     ->Option.map(index => (
@@ -51,7 +51,7 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
     setActiveTuning(_ => tuning.value)
   }
 
-  <div className="w-full max-h-full flex flex-col  max-w-lg mx-auto my-auto">
+  <div className="w-full max-h-full flex flex-col items-center max-w-lg mx-auto my-auto">
     <ChangeTuning onChangeTuning={onChangeTuning} />
     <div className="grid grid-cols-6 w-full border-dashed justify-items-center pt-2 pb-1">
       {Constants.Tuning.standard.value
@@ -86,12 +86,6 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
           {(synthState === State.IsPlaying && getIsGStringActive(s) ? "S" : "P")->React.string}
         </Button.Base>
       )
-      // <div
-      //   onClick={_ => onPlayGuitarString(s)}
-      //   key=s
-      //   className="py-2 px-4 border-red-500 border-2  flex items-center justify-center">
-      //   {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
-      // </div>
       ->React.array}
     </div>
   </div>
