@@ -22,20 +22,17 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
       currentTuning->Array.map(((s, n)) => s === string ? (s, note) : (s, n))
     )
 
-  let getIsNoteActive = (gString, note) =>
-    switch activeTuning->Array.getBy(((s, n)) => s === gString && n === note) {
-    | Some(_) => true
-    | _ => false
-    }
+  let getIsActiveNote = (gString, note) =>
+    activeTuning->Array.getBy(((s, n)) => s === gString && n === note)->Option.isSome
 
   let getIsGStringActive = gString => currentlyPlayingString === gString
 
   let onPlayGuitarString = gString =>
     activeTuning
-    ->Belt.Array.getBy(x => x->fst === gString)
-    ->Option.map(x => {
+    ->Belt.Array.getBy(s => s->fst === gString)
+    ->Option.map(str => {
       setCurrentlyPlayingString(_ => gString)
-      x->snd->onPlayNote
+      str->snd->onPlayNote
     })
     ->ignore
 
@@ -51,8 +48,8 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
     setActiveTuning(_ => tuning.value)
   }
 
-  <div className="w-full max-h-full flex flex-col items-center max-w-lg mx-auto my-auto">
-    <ChangeTuning onChangeTuning={onChangeTuning} />
+  <div className="w-full max-h-full flex flex-col max-w-lg mx-auto my-auto">
+    <div className="pb-2"> <ChangeTuning onChangeTuning={onChangeTuning} /> </div>
     <div className="grid grid-cols-6 w-full border-dashed justify-items-center pt-2 pb-1">
       {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
@@ -70,7 +67,7 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
           ->Array.map(n => {
             <div key=n className="border-b border-r border-accentlight border-dashed w-full">
               <NoteListItem
-                note=n isActive={getIsNoteActive(s, n)} onClick={_ => onSelectNote(s, n)}
+                note=n isActive={getIsActiveNote(s, n)} onClick={_ => onSelectNote(s, n)}
               />
             </div>
           })
@@ -82,8 +79,15 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
     <div className="grid grid-cols-6 w-full border-dashed justify-items-center gap-2 pt-4">
       {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
-        <Button.Base isActive={getIsGStringActive(s)} key=s onClick={_ => onPlayGuitarString(s)}>
-          {(synthState === State.IsPlaying && getIsGStringActive(s) ? "S" : "P")->React.string}
+        <Button.Base
+          isActive={synthState === State.IsPlaying && getIsGStringActive(s)}
+          key=s
+          onClick={_ => onPlayGuitarString(s)}>
+          <span className="w-4">
+            {synthState === State.IsPlaying && getIsGStringActive(s)
+              ? <Icons.Stop />
+              : <Icons.Play />}
+          </span>
         </Button.Base>
       )
       ->React.array}

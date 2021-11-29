@@ -21,3 +21,21 @@ module Arrow = {
     </svg>
   }
 }
+
+module Play = {
+  @react.component
+  let make = () => {
+    <svg width="100%" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 11.5L1.4583e-06 23L2.46366e-06 -8.74228e-07L20 11.5Z" fill="currentColor" />
+    </svg>
+  }
+}
+
+module Stop = {
+  @react.component
+  let make = () => {
+    <svg width="100%" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0H22V23H0V0Z" fill="currentColor" />
+    </svg>
+  }
+}

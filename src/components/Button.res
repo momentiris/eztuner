@@ -1,7 +1,7 @@
 module Base = {
   @react.component
-  let make = (~children: React.element, ~onClick, ~onMouseDown=() => (), ~isActive: bool) => {
-    let defaultClassnames = "rounded-md flex items-center justify-center p-1 active:button--scale origin-center tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
+  let make = (~children: React.element, ~onClick, ~onMouseDown=?, ~isActive: bool) => {
+    let defaultClassnames = "rounded-md flex items-center justify-center p-2 tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
 
     let classnames =
       defaultClassnames ++
@@ -11,39 +11,10 @@ module Base = {
       | _ => "bg-accent text-light"
       }
 
-    let handleMouseDown = () => {
-      onMouseDown()
-    }
-
-    // let animations = React.useMemo1(_ =>
-    //   switch isActive {
-    //   | false => React.null
-    //   | _ =>
-    //     Belt.Array.range(0, 5)
-    //     ->Belt.Array.mapWithIndex((_, index) =>
-    //       <div
-    //         key={Belt.Int.toString(index)}
-    //         className="bar bg-gray-500"
-    //         style={ReactDOM.Style.make(
-    //           ~animationDuration=Js.Math.random_int(350, 500)->Belt.Int.toString ++ "ms",
-    //           ~height=Js.Math.random_int(3, 6)->Belt.Int.toString ++ "px",
-    //           (),
-    //         )}
-    //       />
-    //     )
-    //     ->React.array
-    //   }
-    // , [isActive])
-
-    <button onMouseDown={_ => handleMouseDown()} onClick={onClick} className=classnames>
-      <div
-        className={"bars z-0 transition-opacity" ++
-        " " ++
-        switch isActive {
-        | false => "opacity-0"
-        | _ => "opacity-100"
-        }}
-      />
+    <button
+      onMouseDown={_ => Belt.Option.map(onMouseDown, fn => fn)->ignore}
+      onClick={onClick}
+      className=classnames>
       {children}
     </button>
   }
