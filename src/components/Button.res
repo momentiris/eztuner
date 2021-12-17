@@ -1,7 +1,7 @@
 module Base = {
   @react.component
   let make = (~children: React.element, ~onClick, ~onMouseDown=?, ~isActive: bool) => {
-    let defaultClassnames = "rounded-md flex items-center justify-center p-2 tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
+    let defaultClassnames = "rounded-md flex items-center justify-center px-2 py-1 tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
 
     let classnames =
       defaultClassnames ++
