@@ -48,37 +48,36 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
     setActiveTuning(_ => tuning.value)
   }
 
-  <div className="w-full max-h-full flex flex-col max-w-lg mx-auto my-auto px-2">
-    <div className="pb-2 self-start w-full"> <ChangeTuning onChangeTuning={onChangeTuning} /> </div>
-    <div className="grid grid-cols-6 w-full border-dashed justify-items-center pt-2 pb-1">
+  <div className="w-full h-full flex flex-col mx-auto">
+    <div className="flex justify-between items-center px-8 pt-6 py-4">
+      <h1 className=" self-start text-3xl font-bold flex w-full"> {"ez-tuner"->React.string} </h1>
+      <ChangeTuning onChangeTuning={onChangeTuning} />
+    </div>
+    <div className="grid grid-cols-6 w-full justify-items-center pb-1 pt-4">
       {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
-        <div key=s className="select-none text-sm text-accentlight last:lowercase">
+        <div key=s className="select-none text-sm text-gray-500 last:lowercase">
           {s->Js.String2.substring(~from=0, ~to_=1)->React.string}
         </div>
       )
       ->React.array}
     </div>
-    <div className="grid grid-cols-6 w-full">
+    <div className="grid grid-cols-6 w-full border-l border-t h-full">
       {stringNoteMap
       ->Array.map(((s, notes)) =>
-        <div key=s className="flex flex-col items-center">
+        <div key=s className="flex flex-col items-center h-full">
           {notes
           ->Array.map(n => {
-            <div className="p-1 w-full">
-              <div key=n className=" w-full">
-                <NoteListItem
-                  note=n isActive={getIsActiveNote(s, n)} onClick={_ => onSelectNote(s, n)}
-                />
-              </div>
-            </div>
+            <NoteListItem
+              note=n isActive={getIsActiveNote(s, n)} onClick={_ => onSelectNote(s, n)}
+            />
           })
           ->React.array}
         </div>
       )
       ->React.array}
     </div>
-    <div className="grid grid-cols-6 w-full border-dashed justify-items-center gap-2 pt-4 px-1">
+    <div className="grid grid-cols-6 w-full justify-items-stretch">
       {Constants.Tuning.standard.value
       ->Array.map(((s, _)) =>
         <Button.Base

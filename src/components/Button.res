@@ -1,15 +1,9 @@
 module Base = {
   @react.component
   let make = (~children: React.element, ~onClick, ~onMouseDown=?, ~isActive: bool) => {
-    let defaultClassnames = "rounded-md flex items-center justify-center px-2 py-1 tracking-wide font-bold border-dark border-4 text-xl w-full cursor-pointer"
+    let defaultClassnames = " flex items-center justify-center p-1 tracking-wide font-bold border-r border-b text-xl cursor-pointer hover:bg-gray-100 py-6"
 
-    let classnames =
-      defaultClassnames ++
-      " " ++
-      switch isActive {
-      | true => "bg-light text-dark"
-      | _ => "bg-accent text-light"
-      }
+    let classnames = defaultClassnames
 
     <button
       onMouseDown={_ => Belt.Option.map(onMouseDown, fn => fn)->ignore}
@@ -35,11 +29,7 @@ module Unmute = {
   @react.component
   let make = (~children: React.element, ~onClick, ~onMouseDown: option<unit => unit>=?) => {
     <button
-      onMouseDown={_ =>
-        switch onMouseDown {
-        | Some(fn) => fn()
-        | _ => ()
-        }}
+      onMouseDown={_ => Belt.Option.map(onMouseDown, fn => fn)->ignore}
       onClick={onClick}
       className="min-w-[8rem] button-transition px-6 py-2 bg-accent tracking-widest font-bold text-current border-dark border-4 text-lg cursor-pointer">
       {children}

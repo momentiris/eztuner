@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        main: ['Roboto Mono', 'monospace'],
+        main: ['system-ui', 'monospace'],
       },
       colors: {
         main: '#3789A4',
