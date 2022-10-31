@@ -49,9 +49,12 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
   }
 
   <div className="w-full h-full flex flex-col mx-auto">
-    <div className="flex justify-between items-center px-8 pt-6 py-4">
-      <h1 className=" self-start text-3xl font-bold flex w-full"> {"ez-tuner"->React.string} </h1>
-      <ChangeTuning onChangeTuning={onChangeTuning} />
+    <div
+      className="flex flex-col gap-4 md:flex-row md:justify-between w-full md:items-center px-8 md:pt-6 py-4">
+      <h1 className="text-3xl font-bold"> {"eztuner.app"->React.string} </h1>
+      <div className="w-full md:max-w-sm pt-2">
+        <ChangeTuning onChangeTuning={onChangeTuning} />
+      </div>
     </div>
     <div className="grid grid-cols-6 w-full justify-items-center pb-1 pt-4">
       {Constants.Tuning.standard.value
@@ -69,7 +72,7 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
           {notes
           ->Array.map(n => {
             <NoteListItem
-              note=n isActive={getIsActiveNote(s, n)} onClick={_ => onSelectNote(s, n)}
+              key={n} note=n isActive={getIsActiveNote(s, n)} onClick={_ => onSelectNote(s, n)}
             />
           })
           ->React.array}
@@ -86,8 +89,8 @@ let make = (~onPlayNote, ~onStopNote, ~onUnmount, ~synthState) => {
           onClick={_ => onPlayGuitarString(s)}>
           <span className="w-3">
             {synthState === State.IsPlaying && getIsGStringActive(s)
-              ? <Icons.Stop />
-              : <Icons.Play />}
+              ? <Icons.Stop size="18" />
+              : <Icons.Play size="18" />}
           </span>
         </Button.Base>
       )
